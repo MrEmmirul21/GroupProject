@@ -13,7 +13,7 @@ port = 5050
 s.bind((host, port))
 s.listen(3)
 
-print("Waiting for players to join")
+print("Waiting for another player to join")
 
 # Keeping track of players
 players = []
@@ -89,7 +89,7 @@ def thread_handling(conn, currentPlayerID):
                         player2 = dataIn
                         game_handling()
                 else:
-                    conn.send("\n Not a correct input...".encode("utf-8"))
+                    conn.send("\nError: Invalid input.".encode("utf-8"))
         except:
             global playerID
             print("Player Disconnected: " + str(currentPlayerID))
@@ -113,5 +113,5 @@ while True:
 
         playerID += 1
     else:
-        print("Can't have more players...")
+        print("Can't receive more players.")
         break
