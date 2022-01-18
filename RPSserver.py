@@ -7,7 +7,7 @@ import time
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Socket config
-host = '127.0.0.1'
+host = ''
 port = 5050
 
 s.bind((host, port))
