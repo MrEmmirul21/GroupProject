@@ -1,24 +1,46 @@
-# The start of the client
+# Imports library
 import socket
-import time
+import threading
 
-ip = socket.gethostbyname(socket.gethostname())
-port = 5698
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('192.168.170.14', port))   #connect to RPS server
+# Create new socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Socket config
+host = '192.168.170.14'
+port = 5050
+
+# Connect to server socket
+s.connect((host, port))
+print("Connected to server...")
+
+def send_data(data):
+    s.send(data.encode("utf-8"))
+
+def game():
+    player_choice = str(input("Rock(r) Scissor(s) Paper(p) : "))
+    if player_choice == "r" or player_choice == "s" or player_choice == "p":
+        send_data(player_choice)
+        print("Waiting for other player...")
+        game_result = s.recv(1024).decode("utf-8")
+        if "RESTARTGAME" and "READY_TO_PLAY" not in game_result:
+            print(game_result)
+        else:
+            if "You Win!" in game_result:
+                print("You Win!")
+            else:
+                print("You Lose!")    
+    else:
+        print("Not correct input...")
+        game()
+
+ready_to_play = False
 
 while True:
-    start = client.recv(512).decode("utf-8")
-    print(start)
-    time.sleep(5)
-    name = input(" > What is your Name ? \n > ")
-    client.send(name.encode("utf8"))
-    time.sleep(5)
-    print(" > Choices : ")
-    print(" > R = Rock. ")
-    print(" > S = Scissors. ")
-    print(" > P = Paper. ")
-    choice = input(" > What is your choice  ? \n > ")
-    client.send(choice.encode("utf-8"))
-    end = client.recv(5500).decode("utf-8")
-    print(end)
+    dataIn = s.recv(1024).decode("utf-8")
+    if not ready_to_play:
+        if dataIn == "READY_TO_PLAY":
+            print("Ready to play")
+            game()
+            ready_to_play = True
+    if dataIn == "RESTARTGAME":
+        game()
