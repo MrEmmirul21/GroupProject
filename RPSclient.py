@@ -3,7 +3,7 @@ import socket
 import threading
 
 # Create new socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Socket config
 host = '192.168.170.14'
@@ -11,11 +11,11 @@ port = 5050
 choices = ['R', 'P', 'S', "s", "p", "r"]
 
 # Connect to server socket
-s.connect((host, port))
+client.connect((host, port))
 print("Connected to game server...")
 
 def send_data(data):
-    s.send(data.encode("utf-8"))
+    client.send(data.encode("utf-8"))
 
 def game():
     print(" ██████╗░░█████╗░░█████╗░██╗░░██╗  ██████╗░░█████╗░██████╗░███████╗██████╗░")
@@ -39,7 +39,7 @@ def game():
     if player_choice in choices:
         send_data(player_choice)
         print("Waiting for another player to choose")
-        game_result = s.recv(1024).decode("utf-8")
+        game_result = client.recv(1024).decode("utf-8")
         if "RESTARTGAME" and "READY_TO_PLAY" not in game_result:
             print(game_result)
             client.close()
@@ -55,7 +55,7 @@ def game():
 ready_to_play = False
 
 while True:
-    dataIn = s.recv(1024).decode("utf-8")
+    dataIn = client.recv(1024).decode("utf-8")
     if not ready_to_play:
         if dataIn == "READY_TO_PLAY":
             print("Ready to play")
