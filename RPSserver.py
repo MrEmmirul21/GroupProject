@@ -38,37 +38,36 @@ def send_to_all_players(data):
     for player in players:
         player.send(data.encode("utf-8"))
 
-# Find the winner
+# Determine the winner
 def game_handling():
     global player1, player2
-    if player1 != "" and player2 != "":
         if player1 == "r":
-            if player2 == "r":
-                send_to_all_players("IT'S A DRAW!!")
-            if player2 == "s":
-                send_to_player("You Win!", players[0])
-                send_to_player("You Lose!", players[1])
-            if player2 == "p":
-                send_to_player("You Lose!", players[0])
-                send_to_player("You Win!", players[1])
-        if player1 == "s":
-            if player2 == "s":
-                send_to_all_players("IT'S A DRAW!!")
-            if player2 == "p":
-                send_to_player("You Win!", players[0])
-                send_to_player("You Lose!", players[1])
-            if player2 == "r":
-                send_to_player("You Lose!", players[0])
-                send_to_player("You Win!", players[1])
-        if player1 == "p":
-            if player2 == "p":
-                send_to_all_players("IT'S A DRAW!!")
-            if player2 == "r":
-                send_to_player("You Win!", players[0])
-                send_to_player("You Lose!", players[1])
-            if player2 == "s":
-                send_to_player("You Lose!", players[0])
-                send_to_player("You Win!", players[1])
+        if player2 == "s":
+            send_to_player("You Win!", players[0])
+            send_to_player("You Lose!", players[1])
+        elif player2 == "p":
+            send_to_player("You Lose!", players[0])
+            send_to_player("You Win!", players[1])
+                
+    elif player1 == "s":
+        if player2 == "p":
+            send_to_player("You Win!", players[0])
+            send_to_player("You Lose!", players[1])
+        elif player2 == "r":
+            send_to_player("You Lose!", players[0])
+            send_to_player("You Win!", players[1])
+                
+    elif player1 == "p":
+        if player2 == "r":
+            send_to_player("You Win!", players[0])
+            send_to_player("You Lose!", players[1])
+        elif player2 == "s":
+            send_to_player("You Lose!", players[0])
+            send_to_player("You Win!", players[1])
+            
+    elif player1 == player2:
+        send_to_all_players("IT'S A DRAW!!")
+
         player1 = ""
         player2 = ""
         # delay sending RESTARTGAME otherwise it will sometimes print it
