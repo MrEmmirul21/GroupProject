@@ -41,7 +41,7 @@ def send_to_all_players(data):
 # Determine the winner
 def game_handling():
     global player1, player2
-        if player1 == "r":
+    if player1 == "r":
         if player2 == "s":
             send_to_player("You Win!", players[0])
             send_to_player("You Lose!", players[1])
