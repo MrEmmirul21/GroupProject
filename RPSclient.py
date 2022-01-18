@@ -8,6 +8,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Socket config
 host = '192.168.170.14'
 port = 5050
+choices = ['R', 'P', 'S', "s", "p", "r"]
 
 # Connect to server socket
 s.connect((host, port))
@@ -17,10 +18,27 @@ def send_data(data):
     s.send(data.encode("utf-8"))
 
 def game():
-    player_choice = str(input("Rock(r) Scissor(s) Paper(p) : "))
-    if player_choice == "r" or player_choice == "s" or player_choice == "p":
+    print(" ██████╗░░█████╗░░█████╗░██╗░░██╗  ██████╗░░█████╗░██████╗░███████╗██████╗░")
+    print(" ██╔══██╗██╔══██╗██╔══██╗██║░██╔╝  ██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗")
+    print(" ██████╔╝██║░░██║██║░░╚═╝█████═╝░  ██████╔╝███████║██████╔╝█████╗░░██████╔╝")
+    print(" ██╔══██╗██║░░██║██║░░██╗██╔═██╗░  ██╔═══╝░██╔══██║██╔═══╝░██╔══╝░░██╔══██╗")
+    print(" ██║░░██║╚█████╔╝╚█████╔╝██║░╚██╗  ██║░░░░░██║░░██║██║░░░░░███████╗██║░░██║") 
+    print(" ╚═╝░░╚═╝░╚════╝░░╚════╝░╚═╝░░╚═╝  ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░░░╚══════╝╚═╝░░╚═╝")
+    print(" ░██████╗░█████╗░██╗░██████╗░██████╗░█████╗░██████╗░")
+    print(" ██╔════╝██╔══██╗██║██╔════╝██╔════╝██╔══██╗██╔══██╗")
+    print(" ╚█████╗░██║░░╚═╝██║╚█████╗░╚█████╗░██║░░██║██████╔╝")
+    print(" ░╚═══██╗██║░░██╗██║░╚═══██╗░╚═══██╗██║░░██║██╔══██╗")
+    print(" ██████╔╝╚█████╔╝██║██████╔╝██████╔╝╚█████╔╝██║░░██║")
+    print(" ╚═════╝░░╚════╝░╚═╝╚═════╝░╚═════╝░░╚════╝░╚═╝░░╚═╝")
+    print(" ###  Welcome to Rock Paper Scissor Multiplayer Game!  ###")
+    print(" [R] Rock ")
+    print(" [P] Paper ")
+    print(" [S] Scissors ")
+    player_choice = input("Rock/Paper/Scissors : ")
+    
+    if player_choice in choices:
         send_data(player_choice)
-        print("Waiting for other player...")
+        print("Waiting for another player to choose")
         game_result = s.recv(1024).decode("utf-8")
         if "RESTARTGAME" and "READY_TO_PLAY" not in game_result:
             print(game_result)
@@ -30,7 +48,7 @@ def game():
             else:
                 print("You Lose!")    
     else:
-        print("Not correct input...")
+        print("Error: Invalid input.")
         game()
 
 ready_to_play = False
